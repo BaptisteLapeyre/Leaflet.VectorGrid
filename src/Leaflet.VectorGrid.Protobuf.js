@@ -127,6 +127,7 @@ L.VectorGrid.Protobuf = L.VectorGrid.extend({
 		return fetch(tileUrl, this.options.fetchOptions).then(function(response){
 
 			if (!response.ok || !this._isCurrentTile(coords)) {
+				console.log("test");
 				return {layers:[]};
 			} 
 
