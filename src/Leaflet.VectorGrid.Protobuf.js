@@ -70,6 +70,9 @@ L.VectorGrid.Protobuf = L.VectorGrid.extend({
 // 		this._slicer = geojsonvt(geojson, options);
 		this._url = url;
 		L.VectorGrid.prototype.initialize.call(this, options);
+		this.startEvent = new Event('startVectorgridProtobufRequest');
+		this.endEvent = new Event('endVectorgridProtobufRequest');
+
 	},
 
 	// 🍂method setUrl(url: String, noRedraw?: Boolean): this
@@ -123,13 +126,13 @@ L.VectorGrid.Protobuf = L.VectorGrid.extend({
 		}
 
 		var tileUrl = L.Util.template(this._url, L.extend(data, this.options));
-
+		document.dispatchEvent(this.startEvent);
 		return fetch(tileUrl, this.options.fetchOptions).then(function(response){
-
+			document.dispatchEvent(this.endEvent);
 			if (!response.ok || !this._isCurrentTile(coords)) {
-				console.log("test");
 				return {layers:[]};
 			} 
+			
 
 			return response.blob().then( function (blob) {
 
