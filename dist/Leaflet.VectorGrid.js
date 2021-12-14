@@ -360,6 +360,7 @@ L.VectorGrid = L.GridLayer.extend({
 		var renderer = this.options.rendererFactory(coords, tileSize, this.options);
 
 		var tileBounds = this._tileCoordsToBounds(coords);	
+
 		var vectorTilePromise = this._getVectorTilePromise(coords, tileBounds);
 
 		if (storeFeatures) {
@@ -2069,11 +2070,10 @@ L.VectorGrid.Protobuf = L.VectorGrid.extend({
 		var tileUrl = L.Util.template(this._url, L.extend(data, this.options));
 		document.dispatchEvent(this.startEvent);
 		return fetch(tileUrl, this.options.fetchOptions).then(function(response){
-			document.dispatchEvent(this.endEvent);
 			if (!response.ok || !this._isCurrentTile(coords)) {
 				return {layers:[]};
 			} 
-			
+			document.dispatchEvent(this.endEvent);
 
 			return response.blob().then( function (blob) {
 
